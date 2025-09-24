@@ -1,0 +1,44 @@
+# Data - NEVER commit
+backend/data/documents/*
+backend/data/embeddings/*
+backend/data/evaluations/*
+backend/data/metrics/*
+backend/data/errors/*
+backend/data/exports/*
+!backend/data/.gitkeep
+!backend/data/README.md
+
+# Environment
+.env
+.env.local
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+*.egg-info/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+playwright-report/
+test-results/
+coverage/
