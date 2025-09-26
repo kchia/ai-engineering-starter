@@ -1,99 +1,24 @@
-# CLAUDE.md
+# Cursor AI Rules for AI Engineering Starter
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Project Overview
 
-## Development Commands
+This is a full-stack AI engineering project with Next.js frontend, FastAPI backend, and containerized services.
 
-### Quick Start
+## Architecture Constraints
 
-```bash
-make install    # Install all dependencies
-make dev        # Start development environment
-make test       # Run all tests
-make demo       # Prepare demo environment
-```
+- Frontend: Next.js 15.5.4 with App Router (NOT Pages Router)
+- Backend: FastAPI with async/await patterns
+- Database: PostgreSQL with async SQLAlchemy
+- Vector DB: Qdrant for AI operations
+- Cache: Redis for high-performance caching
+- Auth: Auth.js v5 (Next-auth)
 
-### Manual Development
-
-```bash
-# Start services
-docker-compose up -d
-
-# Backend (in separate terminal)
-cd backend && source venv/bin/activate && uvicorn src.main:app --reload
-
-# Frontend (in separate terminal)
-cd app && npm run dev
-```
-
-### Testing
-
-```bash
-# Backend tests
-cd backend && source venv/bin/activate && pytest tests/ -v
-
-# Frontend tests
-cd app && npm test
-
-# E2E tests
-cd app && npm run test:e2e
-```
-
-## Architecture
-
-**Full-stack AI engineering project** with three-tier architecture:
-
-### Frontend (`/app`)
-
-- **Next.js 15.5.4** with App Router and TypeScript
-- **Auth.js v5** for authentication
-- **Tailwind CSS v4** for styling
-- **Playwright** for E2E testing
-- Runs on port 3000
-
-### Backend (`/backend`)
-
-- **FastAPI** for high-performance API
-- **LangChain/LangGraph** for AI workflows
-- **SQLAlchemy** with async PostgreSQL
-- **Prometheus** metrics collection
-- Runs on port 8000
-
-### Services (Docker Compose)
-
-- **PostgreSQL 16** - Primary database (port 5432)
-- **Qdrant** - Vector database for AI (ports 6333/6334)
-- **Redis 7** - Cache and sessions (port 6379)
-
-## Key Endpoints
-
-- Frontend: http://localhost:3000
-- Backend API docs: http://localhost:8000/docs
-- Health check: http://localhost:8000/health
-- Metrics: http://localhost:8000/metrics
-- Qdrant dashboard: http://localhost:6333/dashboard
-
-## Environment Setup
-
-Copy `.env.example` files and configure:
-
-- `backend/.env` - Database URLs, AI API keys
-- `app/.env.local` - Auth secrets, API URLs
-
-## Tech Stack Dependencies
-
-- **Node.js 18+**, **Python 3.11+**, **Docker Desktop**
-- AI: OpenAI, LangChain, LangGraph, LangSmith
-- Vector: Qdrant, sentence-transformers
-- Database: PostgreSQL with asyncpg, SQLAlchemy, Alembic
-- Auth: Next-auth v5 with Auth.js core
-- Testing: Playwright (E2E), pytest (backend)
-
-## Code Style & Patterns
+## Code Style Rules
 
 ### Frontend (Next.js/TypeScript)
 
-- Use App Router patterns (not Pages Router)
+- ALWAYS use TypeScript - never suggest JavaScript
+- Use App Router patterns exclusively (not Pages Router)
 - Prefer server components over client components
 - Use TypeScript strict mode with proper type definitions
 - Follow Next.js 15.5.4 conventions
@@ -108,7 +33,7 @@ Copy `.env.example` files and configure:
 
 ### Backend (FastAPI/Python)
 
-- Use async/await patterns consistently
+- Use async/await patterns consistently for all I/O operations
 - Follow FastAPI best practices with proper dependencies
 - Use Pydantic models for all request/response validation
 - Implement structured error handling with custom exceptions
@@ -160,28 +85,26 @@ Copy `.env.example` files and configure:
 
 ## Project-Specific Rules
 
-1. **NEVER** suggest using Pages Router - this project uses App Router
+1. **NEVER** suggest Pages Router - this project uses App Router
 2. **ALWAYS** use TypeScript - no JavaScript suggestions
 3. **PREFER** server components over client components
 4. **USE** the existing auth system (Auth.js v5)
 5. **FOLLOW** the established folder structure
-6. **MAINTAIN** the three-tier architecture (Frontend/Backend/Services)
-7. **USE** Docker Compose for services, not local installations
+6. **MAINTAIN** the three-tier architecture
+7. **USE** Docker Compose for services
 8. **IMPLEMENT** proper error handling and logging
-9. **FOLLOW** the existing API patterns in `/backend/src/api/`
-10. **USE** the existing component patterns in `/app/src/components/`
+9. **FOLLOW** existing API patterns in `/backend/src/api/`
+10. **USE** existing component patterns in `/app/src/components/`
 
 ## Common Anti-Patterns to Avoid
 
 ### Architecture
-
 - Don't suggest Pages Router patterns
 - Don't mix client/server component patterns incorrectly
 - Don't bypass the existing auth system
 - Don't suggest changes that break the Docker setup
 
 ### Code Quality
-
 - Don't use synchronous database operations
 - Don't ignore proper error handling patterns
 - Don't hardcode values (use environment variables)
@@ -190,7 +113,6 @@ Copy `.env.example` files and configure:
 - Don't skip input validation and sanitization
 
 ### AI/ML Specific
-
 - Don't make AI calls without proper error handling
 - Don't ignore vector search optimization
 - Don't cache AI responses without considering staleness
@@ -198,9 +120,23 @@ Copy `.env.example` files and configure:
 - Don't ignore streaming for long-running AI operations
 
 ### Performance
-
 - Don't ignore proper loading states
 - Don't fetch data in client components when server components suffice
 - Don't ignore database query optimization
 - Don't create unnecessary re-renders in React
 - Don't ignore proper caching strategies
+
+## File Structure Context
+
+- `/app/` - Next.js frontend with App Router
+- `/backend/` - FastAPI backend with async patterns
+- `/docs/` - Architecture and API documentation
+- `docker-compose.yml` - Service containers
+- `Makefile` - Development commands
+
+## Development Workflow
+
+- Use `make install` to install dependencies
+- Use `make dev` to start development environment
+- Use `make test` to run all tests
+- Use `make demo` to prepare demo environment
