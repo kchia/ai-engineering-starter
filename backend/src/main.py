@@ -1,11 +1,12 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
 
 # Try to import optional packages with proper error handling
 try:
-    from prometheus_client import Counter, Histogram, generate_latest
     from fastapi.responses import PlainTextResponse
+    from prometheus_client import Counter, Histogram, generate_latest
 
     METRICS_ENABLED = True
     print("✅ Prometheus metrics enabled")
@@ -63,11 +64,13 @@ if METRICS_ENABLED:
     @app.get("/metrics", response_class=PlainTextResponse)
     async def metrics():
         return generate_latest()
+
 else:
 
     @app.get("/metrics")
     async def metrics():
         return {"error": "Metrics not available - prometheus_client not installed"}
+
 
 # Import and register routers
 # from .api.v1.routes import chat, agents, documents
