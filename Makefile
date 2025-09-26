@@ -1,12 +1,14 @@
-.PHONY: help install dev test build deploy demo clean
+.PHONY: help install dev test build deploy demo clean template-setup
 
 help:
-	@echo "�� AI Engineering Demo Day Project"
-	@echo "===================================="
-	@echo "  make install    - Install dependencies"
-	@echo "  make dev        - Start development (no tmux)"
-	@echo "  make test       - Run all tests"
-	@echo "  make demo       - Prepare demo environment"
+	@echo "🤖 AI Engineering Starter Template"
+	@echo "=================================="
+	@echo "  make install         - Install dependencies"
+	@echo "  make dev             - Start development environment"
+	@echo "  make test            - Run all tests"
+	@echo "  make demo            - Prepare demo environment"
+	@echo "  make template-setup  - Setup guide for template users"
+	@echo "  make clean           - Clean up containers and dependencies"
 
 install:
 	@echo "📦 Installing dependencies..."
@@ -43,3 +45,15 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name ".next" -exec rm -rf {} + 2>/dev/null || true
 	rm -rf backend/venv app/node_modules
+
+template-setup:
+	@echo "🎯 Template Setup Guide"
+	@echo "======================"
+	@echo "1. Update package.json name and description"
+	@echo "2. Configure environment variables (.env files)"
+	@echo "3. Update README.md with your project details"
+	@echo "4. Customize authentication in app/auth.config.ts"
+	@echo "5. Add your AI models and prompts"
+	@echo "6. Run 'make install' to install dependencies"
+	@echo ""
+	@echo "📖 For detailed instructions, see TEMPLATE_SETUP.md"

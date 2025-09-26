@@ -1,6 +1,16 @@
 # 🤖 AI Engineering Starter Template
 
+> **🚀 Template Usage**: This is a GitHub template repository. Click "Use this template" to create your own project based on this starter.
+
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-000000?style=for-the-badge&logo=github)](https://github.com/yourusername/ai-engineering-starter/generate)
+
 A production-ready AI engineering project template with modern full-stack architecture, authentication, monitoring, and containerized services.
+
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-green?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=flat-square&logo=docker)](https://docs.docker.com/compose/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 ## ✨ Features
 
@@ -15,6 +25,10 @@ A production-ready AI engineering project template with modern full-stack archit
 - **🔧 Developer Tools**: Hot reloading, type safety, linting
 
 ## 🚀 Quick Start
+
+### For Template Users
+
+If you're using this template, see [TEMPLATE_SETUP.md](TEMPLATE_SETUP.md) for detailed setup instructions.
 
 ### Prerequisites
 
@@ -123,7 +137,7 @@ make help
 ## 📁 Project Structure
 
 ```
-ai-engineering-project/
+ai-engineering-starter/
 ├── app/                     # Next.js frontend
 │   ├── src/app/            # App Router pages
 │   ├── auth.config.ts      # Auth.js configuration
