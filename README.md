@@ -2,7 +2,7 @@
 
 > **🚀 Template Usage**: This is a GitHub template repository. Click "Use this template" to create your own project based on this starter.
 
-[![Use this template](https://img.shields.io/badge/Use%20this%20template-000000?style=for-the-badge&logo=github)](https://github.com/yourusername/ai-engineering-starter/generate)
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-000000?style=for-the-badge&logo=github)](https://github.com/kchia/ai-engineering-starter/generate)
 
 A production-ready AI engineering project template with modern full-stack architecture, authentication, monitoring, and containerized services.
 
