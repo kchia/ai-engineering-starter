@@ -12,20 +12,47 @@ help:
 
 install:
 	@echo "📦 Installing dependencies..."
+	@echo "Installing frontend dependencies..."
 	cd app && npm install && npx playwright install
-	cd backend && python -m venv venv && ./venv/bin/pip install -r requirements.txt
+	@echo "Setting up backend environment..."
+	cd backend && rm -rf venv 2>/dev/null || true
+	cd backend && python3 -m venv venv && ./venv/bin/pip install --upgrade pip
+	@echo "Installing backend dependencies..."
+	cd backend && ./venv/bin/pip install -r requirements.txt
+	@echo "Setting up environment files..."
 	cp backend/.env.example backend/.env 2>/dev/null || true
 	cp app/.env.local.example app/.env.local 2>/dev/null || true
-	@echo "✅ Edit .env files with your API keys"
+	@echo "✅ Installation complete!"
+	@echo "📝 Next: Edit .env files with your API keys"
+	@echo "🚀 Then run: make dev"
 
 dev:
 	@echo "🚀 Starting development..."
-	@echo "Run these in separate terminals:"
-	@echo "1. docker-compose up"
-	@echo "2. cd backend && source venv/bin/activate && uvicorn src.main:app --reload"
-	@echo "3. cd app && npm run dev"
-	@docker-compose up -d
-	@echo "✅ Services started. Open http://localhost:3000"
+	@echo "Checking Docker availability..."
+	@if [ -f "/Applications/Docker.app/Contents/Resources/bin/docker" ]; then \
+		DOCKER_CMD="/Applications/Docker.app/Contents/Resources/bin/docker"; \
+	elif command -v docker >/dev/null 2>&1; then \
+		DOCKER_CMD="docker"; \
+	else \
+		echo "❌ Docker not found. Please install Docker Desktop and start it."; \
+		exit 1; \
+	fi; \
+	if ! $$DOCKER_CMD info >/dev/null 2>&1; then \
+		echo "❌ Docker daemon not running. Please start Docker Desktop."; \
+		exit 1; \
+	fi; \
+	echo "✅ Docker is running"; \
+	echo "Starting services..."; \
+	$$DOCKER_CMD compose up -d 2>/dev/null || $$DOCKER_CMD-compose up -d
+	@echo ""
+	@echo "🎯 Next steps - Run these in separate terminals:"
+	@echo "1. cd backend && source venv/bin/activate && uvicorn src.main:app --reload"
+	@echo "2. cd app && npm run dev"
+	@echo ""
+	@echo "📱 Access points:"
+	@echo "- Frontend: http://localhost:3000"
+	@echo "- Backend API: http://localhost:8000"
+	@echo "- API Docs: http://localhost:8000/docs"
 
 test:
 	cd backend && source venv/bin/activate && pytest tests/ -v
