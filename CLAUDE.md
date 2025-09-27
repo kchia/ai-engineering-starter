@@ -7,11 +7,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Quick Start
 
 ```bash
-make install    # Install all dependencies
+make install    # Install all dependencies (see troubleshooting if this fails)
 make dev        # Start development environment
 make test       # Run all tests
 make demo       # Prepare demo environment
 ```
+
+**If you encounter issues**: See the [🚨 Troubleshooting](#-troubleshooting) section below.
 
 ### Manual Development
 
@@ -37,6 +39,108 @@ cd app && npm test
 
 # E2E tests
 cd app && npm run test:e2e
+```
+
+## 🚨 Troubleshooting
+
+### Common Issues and Solutions
+
+#### 1. npm Configuration Warnings
+
+**Problem**: Seeing npm warnings about unknown user configs like "userstory", "myPort", etc.
+
+**Solution**:
+
+```bash
+# Quick fix using Makefile
+make fix-npm
+
+# Or manually clean up:
+npm config delete userstory
+npm config delete myPort
+npm config delete file
+npm config delete python
+npm config delete NPM_TOKEN
+
+# View current config
+npm config list
+```
+
+#### 2. Installation Failures
+
+**Problem**: `make install` fails with missing prerequisites
+
+**Solutions**:
+
+- **Node.js missing**: Install Node.js 18+ from [nodejs.org](https://nodejs.org)
+- **Python missing**: Install Python 3.11+ from [python.org](https://python.org)
+- **Docker missing**: Install Docker Desktop and ensure it's running
+
+**Problem**: Frontend directory appears empty (template issue)
+
+**Solution** (rare GitHub template edge case):
+
+```bash
+# 1. Verify the issue
+ls -la app/
+# If you see only .env files but no package.json or src/, manually recreate:
+
+# 2. Recreate Next.js app
+cd app
+npx create-next-app@latest . --typescript --tailwind --app --src-dir --eslint --import-alias "@/*" --yes
+npm install @playwright/test @auth/core next-auth lightningcss
+cd ..
+
+# 3. Continue with normal setup
+make install
+```
+
+#### 3. Docker Issues
+
+**Problem**: Docker services won't start
+
+**Solutions**:
+
+- Ensure Docker Desktop is installed and running
+- Check port conflicts: `docker ps` and stop conflicting containers
+- Reset Docker: `make clean && make dev`
+
+#### 4. Database Connection Issues
+
+**Problem**: Backend can't connect to PostgreSQL
+
+**Solutions**:
+
+- Verify services are running: `docker ps`
+- Check environment variables in `backend/.env`
+- Restart services: `docker-compose restart postgres`
+
+#### 5. Authentication Issues
+
+**Problem**: Next-auth errors or login failures
+
+**Solutions**:
+
+- Verify `AUTH_SECRET` is set in `app/.env.local`
+- Check `AUTH_URL` matches your development URL
+- Restart the frontend: `cd app && npm run dev`
+
+### Emergency Reset
+
+If everything is broken, try this complete reset:
+
+```bash
+# Stop all services
+make clean
+
+# Fix npm config
+make fix-npm
+
+# Reinstall everything
+make install
+
+# Start fresh
+make dev
 ```
 
 ## Architecture
@@ -73,6 +177,17 @@ cd app && npm run test:e2e
 - Metrics: http://localhost:8000/metrics
 - Qdrant dashboard: http://localhost:6333/dashboard
 
+## Prerequisites
+
+Before starting, ensure you have these installed:
+
+- **Node.js 18+** - [Download here](https://nodejs.org)
+- **Python 3.11+** - [Download here](https://python.org)
+- **Docker Desktop** - [Download here](https://docker.com/products/docker-desktop)
+- **Clean npm configuration** - Run `make fix-npm` if you see warnings
+
+⚠️ **Note**: This is a GitHub template. If the `app` directory is empty after cloning, follow the troubleshooting steps above.
+
 ## Environment Setup
 
 Copy `.env.example` files and configure:
@@ -82,12 +197,12 @@ Copy `.env.example` files and configure:
 
 ## Tech Stack Dependencies
 
-- **Node.js 18+**, **Python 3.11+**, **Docker Desktop**
-- AI: OpenAI, LangChain, LangGraph, LangSmith
-- Vector: Qdrant, sentence-transformers
-- Database: PostgreSQL with asyncpg, SQLAlchemy, Alembic
-- Auth: Next-auth v5 with Auth.js core
-- Testing: Playwright (E2E), pytest (backend)
+- **Core**: Node.js 18+, Python 3.11+, Docker Desktop
+- **AI**: OpenAI, LangChain, LangGraph, LangSmith
+- **Vector**: Qdrant, sentence-transformers
+- **Database**: PostgreSQL with asyncpg, SQLAlchemy, Alembic
+- **Auth**: Next-auth v5 with Auth.js core
+- **Testing**: Playwright (E2E), pytest (backend)
 
 ## Code Style & Patterns
 

@@ -1,4 +1,4 @@
-.PHONY: help install dev test build deploy demo clean template-setup
+.PHONY: help install dev test build deploy demo clean template-setup fix-npm
 
 help:
 	@echo "🤖 AI Engineering Starter Template"
@@ -8,12 +8,32 @@ help:
 	@echo "  make test            - Run all tests"
 	@echo "  make demo            - Prepare demo environment"
 	@echo "  make template-setup  - Setup guide for template users"
+	@echo "  make fix-npm         - Fix npm configuration warnings"
 	@echo "  make clean           - Clean up containers and dependencies"
 
 install:
 	@echo "📦 Installing dependencies..."
+	@echo "Checking prerequisites..."
+	@if ! command -v node >/dev/null 2>&1; then \
+		echo "❌ Node.js not found. Please install Node.js 18+ first."; \
+		exit 1; \
+	fi
+	@if ! command -v python3 >/dev/null 2>&1; then \
+		echo "❌ Python 3 not found. Please install Python 3.11+ first."; \
+		exit 1; \
+	fi
+	@if [ ! -f "app/package.json" ]; then \
+		echo "❌ Frontend app/package.json not found."; \
+		echo "💡 This might be a template repository issue. See troubleshooting in CLAUDE.md"; \
+		exit 1; \
+	fi
+	@if [ ! -f "backend/requirements.txt" ]; then \
+		echo "❌ Backend requirements.txt not found."; \
+		exit 1; \
+	fi
+	@echo "✅ Prerequisites check passed"
 	@echo "Installing frontend dependencies..."
-	cd app && npm install && npx playwright install
+	cd app && npm install --loglevel=error && npx playwright install
 	@echo "Setting up backend environment..."
 	cd backend && rm -rf venv 2>/dev/null || true
 	cd backend && python3 -m venv venv && ./venv/bin/pip install --upgrade pip
@@ -84,3 +104,17 @@ template-setup:
 	@echo "6. Run 'make install' to install dependencies"
 	@echo ""
 	@echo "📖 For detailed instructions, see TEMPLATE_SETUP.md"
+
+fix-npm:
+	@echo "🔧 Fixing npm configuration warnings..."
+	@echo "Checking for problematic npm config entries..."
+	@npm config list | grep -E "(userstory|myPort|file|python|NPM_TOKEN)" || true
+	@echo ""
+	@echo "To fix npm warnings, run these commands:"
+	@echo "npm config delete userstory"
+	@echo "npm config delete myPort"
+	@echo "npm config delete file"
+	@echo "npm config delete python"
+	@echo "npm config delete NPM_TOKEN"
+	@echo ""
+	@echo "Or reset all user config: npm config edit --global"
